@@ -8,18 +8,21 @@ with open(os.path.join(__dirname, "./input.txt")) as file:
     left = text.count("(")
     right = text.count(")")
 
-    # find pairs of matching parenthesis
-    # (()) will result in 2 pairs
-    pairs = []
-    for i in range(left):
-        for j in range(right):
-            if i == j:
-                pairs.append((i, j))
+    # get the number of pairs of valid parentheses
+    stack = []
+    valid = 0
+
+    for char in text:
+        if char == "(":
+            stack.append(char)
+        elif char == ")":
+            if len(stack) > 0:
+                stack.pop()
+                valid += 1
+            else:
+                stack.append(char)
 
     print(f"Total left: {left}")
     print(f"Total right: {right}")
-    print(f"Total pairs: {len(pairs)}")
-
-    balanced = len(pairs) == left == right
-
-    print("Balanced" if balanced else "Unbalanced")
+    print(f"Total pairs: {valid}")
+    print("Unbalanced" if len(stack) > 0 else "Balanced")
